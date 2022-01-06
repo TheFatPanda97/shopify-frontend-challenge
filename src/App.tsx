@@ -1,28 +1,26 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Card, Button } from '@shopify/polaris';
 import ReactCardFlip from 'react-card-flip';
 
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { fetchPosts } from './store/postSlice';
+
 const App: FC = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const dispatch = useAppDispatch();
+  const { posts } = useAppSelector((state) => state.posts);
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, []);
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
 
   return (
-    <div className="App">
-      <header className="test">
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-        <p>
-          Edit
-          <code>src/App.tsx</code>
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="p-5 app">
+      <h1 className="text-center text-5xl">SPACESTAGRAM</h1>
       <ReactCardFlip isFlipped={isFlipped}>
         <Card sectioned>
           <Button onClick={() => setIsFlipped(!isFlipped)}>Example button</Button>
